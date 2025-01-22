@@ -1,0 +1,15 @@
+
+*.v2
+.vs/BuberDinner/v17/.suo
+*Debug*
+*obj*
+.vs/BuberDinner/FileContentIndex/0d55b6b0-61fd-4545-9c53-491861929d3f.vsidx
+.vs/BuberDinner/FileContentIndex/026882d7-55c5-4a4a-a49a-7ff81d1b2ffa.vsidx
+.vs/ProjectEvaluation/buberdinner.strings.v8.bin
+.vs/BuberDinner/config/applicationhost.config
+.vs/BuberDinner/v17/DocumentLayout.json
+.vs/BuberDinner/FileContentIndex/87d923b7-fded-49d8-b11c-d07456275413.vsidx
+.vs/BuberDinner/FileContentIndex/8dd52b50-6fcb-4b78-832b-4b003ed4d075.vsidx
+.vs/BuberDinner/FileContentIndex/ced8e2f4-f173-418b-a740-152dd0467bd9.vsidx
+.vs/ProjectEvaluation/buberdinner.metadata.v8.bin
+.vs/ProjectEvaluation/buberdinner.projects.v8.bin
