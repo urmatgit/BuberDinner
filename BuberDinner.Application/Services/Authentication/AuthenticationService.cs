@@ -1,8 +1,10 @@
 ﻿using BuberDinner.Application.Common.Errors;
 using BuberDinner.Application.Common.Interfaces.Authentication;
 using BuberDinner.Application.Common.Interfaces.Persistence;
+using BuberDinner.Domain.Common.Errors;
 using BuberDinner.Domain.Entities;
-using FluentResults;
+using ErrorOr;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,27 +22,27 @@ namespace BuberDinner.Application.Services.Authentication
             _jwtTokenGenerator = jwtTokenGenerator;
             _userRepository = userRepository;
         }
-        public AuthenticationResult Login(string email, string password)
+        public ErrorOr<AuthenticationResult> Login(string email, string password)
         {
             //1. validate user exists
             if (_userRepository.GetUserByEmail(email) is not User user)
             {
-                throw new Exception("User with email is not exists.");
+                return Errors.Authentication.InvalidCredentials;
             }
             if (user.Password != password) {
-                throw new Exception("Invalid password");
+                return Errors.Authentication.InvalidCredentials;
             }
             var token = _jwtTokenGenerator.GeneratorToken(user);
 
             return new AuthenticationResult(user,token);
         }
 
-        public Result<AuthenticationResult> Register(string firstName, string lastName, string email, string password)
+        public ErrorOr<AuthenticationResult> Register(string firstName, string lastName, string email, string password)
         {
             //check user if alreade exists
             if (_userRepository.GetUserByEmail(email) is not null) {
                 //throw new Exception("User with given email already exists."); //new DublicateEmailException();
-                return  Result.Fail<AuthenticationResult>(new[]{ new DublicateEmailError()  });
+                return  Errors.User.DublicateEmail;
             }
 
             //create user

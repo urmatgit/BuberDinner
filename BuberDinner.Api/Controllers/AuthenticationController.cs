@@ -1,13 +1,15 @@
 ﻿using BuberDinner.Application.Services.Authentication;
 using BuberDinner.Contracts.Authentication;
+using BuberDinner.Domain.Common.Errors;
+using ErrorOr;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BuberDinner.Api.Controllers
 {
-    [ApiController]
+ 
     [Route("auth")]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController : ApiController
     {
         private readonly IAuthenticationService _authenticationService;
         public AuthenticationController(IAuthenticationService authenticationService)
@@ -22,10 +24,11 @@ namespace BuberDinner.Api.Controllers
         [HttpPost("register")]
         public IActionResult Register(RegisterRequest request)
         {
-            var registerResult=_authenticationService.Register(request.FirstName,request.LastName,request.Email,request.Password);
-            return registerResult.Match(
+            ErrorOr<AuthenticationResult> authRestul = _authenticationService.Register(request.FirstName,request.LastName,request.Email,request.Password);
+             
+            return authRestul.Match(
                 authRestul => Ok(MapAuthResult(authRestul)),
-                error => Problem(statusCode: error.StatusCode,title:error.ErrorMessage));
+                Errors => Problem(Errors));
             
 
             
@@ -39,9 +42,19 @@ namespace BuberDinner.Api.Controllers
         [HttpPost("login")]
         public IActionResult Login(LoginRequest request) {
             var authRestul = _authenticationService.Login(request.Email, request.Password);
-            var response = new AuthenticationResponse(authRestul.User.Id, authRestul.User.FirstName, authRestul.User.LastName, authRestul.User.Email, authRestul.Token);
+            if (authRestul.IsError && authRestul.FirstError == Errors.Authentication.InvalidCredentials)
+            {
+                return Problem(
+                    statusCode: StatusCodes.Status401Unauthorized,
+                    title: authRestul.FirstError.Description);
+            }
+            return authRestul.Match(
+                authResult => Ok(MapAuthResult(authResult)),
+                errors=>Problem(errors)
+                );
+            //var response = new AuthenticationResponse(authRestul.User.Id, authRestul.User.FirstName, authRestul.User.LastName, authRestul.User.Email, authRestul.Token);
 
-            return Ok(response);
+            //return Ok(response);
         }
     }
 }
