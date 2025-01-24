@@ -1,6 +1,8 @@
-﻿using BuberDinner.Application.Common.Interfaces.Authentication;
+﻿using BuberDinner.Application.Common.Errors;
+using BuberDinner.Application.Common.Interfaces.Authentication;
 using BuberDinner.Application.Common.Interfaces.Persistence;
 using BuberDinner.Domain.Entities;
+using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +25,7 @@ namespace BuberDinner.Application.Services.Authentication
             //1. validate user exists
             if (_userRepository.GetUserByEmail(email) is not User user)
             {
-                throw new Exception("User with given email already exists.");
+                throw new Exception("User with email is not exists.");
             }
             if (user.Password != password) {
                 throw new Exception("Invalid password");
@@ -33,11 +35,12 @@ namespace BuberDinner.Application.Services.Authentication
             return new AuthenticationResult(user,token);
         }
 
-        public AuthenticationResult Register(string firstName, string lastName, string email, string password)
+        public Result<AuthenticationResult> Register(string firstName, string lastName, string email, string password)
         {
             //check user if alreade exists
             if (_userRepository.GetUserByEmail(email) is not null) {
-                throw new Exception("User with given email already exists.");
+                //throw new Exception("User with given email already exists."); //new DublicateEmailException();
+                return  Result.Fail<AuthenticationResult>(new[]{ new DublicateEmailError()  });
             }
 
             //create user

@@ -22,11 +22,20 @@ namespace BuberDinner.Api.Controllers
         [HttpPost("register")]
         public IActionResult Register(RegisterRequest request)
         {
-            var authRestul=_authenticationService.Register(request.FirstName,request.LastName,request.Email,request.Password);
-            var response=new AuthenticationResponse(authRestul.User.Id,authRestul.User.FirstName,authRestul.User.LastName,authRestul.User.Email,authRestul.Token);
+            var registerResult=_authenticationService.Register(request.FirstName,request.LastName,request.Email,request.Password);
+            return registerResult.Match(
+                authRestul => Ok(MapAuthResult(authRestul)),
+                error => Problem(statusCode: error.StatusCode,title:error.ErrorMessage));
+            
 
-            return Ok(response);
+            
         }
+
+        private static AuthenticationResponse MapAuthResult(AuthenticationResult authRestul)
+        {
+            return new AuthenticationResponse(authRestul.User.Id, authRestul.User.FirstName, authRestul.User.LastName, authRestul.User.Email, authRestul.Token);
+        }
+
         [HttpPost("login")]
         public IActionResult Login(LoginRequest request) {
             var authRestul = _authenticationService.Login(request.Email, request.Password);
