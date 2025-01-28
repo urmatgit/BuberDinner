@@ -1,6 +1,7 @@
 ﻿using BuberDinner.Application.Common.Errors;
 using BuberDinner.Application.Common.Interfaces.Authentication;
 using BuberDinner.Application.Common.Interfaces.Persistence;
+using BuberDinner.Application.Services.Authentication.Common;
 using BuberDinner.Domain.Common.Errors;
 using BuberDinner.Domain.Entities;
 using ErrorOr;
@@ -11,38 +12,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BuberDinner.Application.Services.Authentication
+namespace BuberDinner.Application.Services.Authentication.Commands
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AuthenticationCommandService : IAuthenticationCommandService
     {
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IUserRepository _userRepository;
-        public AuthenticationService(IJwtTokenGenerator jwtTokenGenerator,IUserRepository userRepository)
+        public AuthenticationCommandService(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository)
         {
             _jwtTokenGenerator = jwtTokenGenerator;
             _userRepository = userRepository;
         }
-        public ErrorOr<AuthenticationResult> Login(string email, string password)
-        {
-            //1. validate user exists
-            if (_userRepository.GetUserByEmail(email) is not User user)
-            {
-                return Errors.Authentication.InvalidCredentials;
-            }
-            if (user.Password != password) {
-                return Errors.Authentication.InvalidCredentials;
-            }
-            var token = _jwtTokenGenerator.GeneratorToken(user);
-
-            return new AuthenticationResult(user,token);
-        }
+        
 
         public ErrorOr<AuthenticationResult> Register(string firstName, string lastName, string email, string password)
         {
             //check user if alreade exists
-            if (_userRepository.GetUserByEmail(email) is not null) {
+            if (_userRepository.GetUserByEmail(email) is not null)
+            {
                 //throw new Exception("User with given email already exists."); //new DublicateEmailException();
-                return  Errors.User.DublicateEmail;
+                return Errors.User.DublicateEmail;
             }
 
             //create user
@@ -55,8 +44,8 @@ namespace BuberDinner.Application.Services.Authentication
             };
             _userRepository.AddUser(user);
             // create Jwt token
-            Guid userId= user.Id;
-            var token=_jwtTokenGenerator.GeneratorToken(user);
+            Guid userId = user.Id;
+            var token = _jwtTokenGenerator.GeneratorToken(user);
             return new AuthenticationResult(user, token);
         }
     }

@@ -8,9 +8,14 @@
 
   <ItemGroup>
     <Compile Remove="Common\Errors\IError.cs" />
+    <Compile Remove="Services\Authentication\Commands\AuthenticationCommandService.cs" />
+    <Compile Remove="Services\Authentication\Commands\IAuthenticationCommandService.cs" />
+    <Compile Remove="Services\Authentication\Queries\AuthenticationQueryService.cs" />
+    <Compile Remove="Services\Authentication\Queries\IAuthenticationQueryService.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.1" />
   </ItemGroup>
 
