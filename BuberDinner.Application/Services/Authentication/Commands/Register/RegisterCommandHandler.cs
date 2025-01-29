@@ -28,6 +28,8 @@ namespace BuberDinner.Application.Services.Authentication.Commands.Register
 
         public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
+
+            await Task.CompletedTask;
             //check user if alreade exists
             if (_userRepository.GetUserByEmail(request.Email) is not null)
             {
