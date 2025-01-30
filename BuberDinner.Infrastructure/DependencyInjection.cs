@@ -44,7 +44,7 @@ namespace BuberDinner.Infrastructure
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = JwtSettings.Issuer,
                     ValidAudience = JwtSettings.Audience,
-                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration[JwtSettings.Key]))
+                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.Secret))
                 });
 
             return services;
