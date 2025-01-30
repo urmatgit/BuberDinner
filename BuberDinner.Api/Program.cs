@@ -40,6 +40,7 @@ var app = builder.Build();
     //    return Results.Problem();
     //});
     app.UseHttpsRedirection();
+    app.UseAuthentication();
     app.MapControllers();
 
     app.Run();
