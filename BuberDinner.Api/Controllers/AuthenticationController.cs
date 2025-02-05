@@ -8,6 +8,7 @@ using BuberDinner.Domain.Common.Errors;
 using ErrorOr;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,7 @@ namespace BuberDinner.Api.Controllers
 {
 
     [Route("auth")]
+    [AllowAnonymous]
     public class AuthenticationController : ApiController
     {
         private readonly ISender _mediator;
@@ -51,7 +53,7 @@ namespace BuberDinner.Api.Controllers
 
         private static AuthenticationResponse MapAuthResult(AuthenticationResult authRestul)
         {
-            return new AuthenticationResponse(authRestul.User.Id, authRestul.User.FirstName, authRestul.User.LastName, authRestul.User.Email, authRestul.Token);
+            return new AuthenticationResponse(authRestul.User.Id.Value, authRestul.User.FirstName, authRestul.User.LastName, authRestul.User.Email, authRestul.Token);
         }
 
         [HttpPost("login")]
