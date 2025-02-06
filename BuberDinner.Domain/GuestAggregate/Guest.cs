@@ -20,7 +20,11 @@ namespace BuberDinner.Domain.Guest
         }
         public static Guest Creat()
         {
-            return new Guest(GuestId.CreateUnique());
+            return new Guest(GuestId.CreateUnique())
+            {
+                CreatedDateTime = DateTime.Now,
+                UpdatedDateTime = DateTime.Now,
+            };
 
         }
         public GuestId Id { get; set; }

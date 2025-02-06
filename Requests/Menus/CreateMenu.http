@@ -1,0 +1,23 @@
+@host=https://localhost:7138
+@hostId=ada
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJCdWJlckRpbm5lci5Eb21haW4uRW50aXRpZXMuVmFsdWVPYmplY3RzLlVzZXJJZCIsImdpdmVuX25hbWUiOiJVcm1hdCIsImZhbWlseV9uYW1lIjoiRXJraW1iYWV2IiwianRpIjoiM2ViMzQzNTgtZDJiNi00MTM4LTg3OWItNzE2OGQ0N2U3MDkzIiwiZXhwIjoxNzM4NzU4MTM1LCJpc3MiOiJCdWJlckRpbm5lciIsImF1ZCI6IkJ1YmVyRGlubmVyIn0.fuDpr4raLxJRKU0FGOXHj9_S88cWJkDCSxg8wys3r3U
+POST  {{host}}/hosts/{{hostId}}/menus
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name":"Yummy Menu",
+    "description": "A menu with yummy",
+    "sections":[
+        {
+            "name": "Appet",
+            "description": "Description Appet",
+            "items":[
+                {
+                    "name": "fried Pickles",
+                    "description": "Description fried"
+                }
+            ]
+        }
+    ]
+}

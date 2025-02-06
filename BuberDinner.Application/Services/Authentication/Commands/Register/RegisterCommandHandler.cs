@@ -1,18 +1,18 @@
-﻿using BuberDinner.Application.Common.Interfaces.Authentication;
-using BuberDinner.Application.Common.Interfaces.Persistence;
-using BuberDinner.Application.Services.Authentication.Common;
-using BuberDinner.Domain.Entities;
-using BuberDinner.Domain.Common.Errors;
-using ErrorOr;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BuberDinner.Application.Services.Authentication.Commands.Register
+﻿namespace BuberDinner.Application.Services.Authentication.Commands.Register
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using BuberDinner.Application.Common.Interfaces.Authentication;
+    using BuberDinner.Application.Common.Interfaces.Persistence;
+    using BuberDinner.Application.Services.Authentication.Common;
+    using BuberDinner.Domain.Common.Errors;
+    using BuberDinner.Domain.Entities;
+    using ErrorOr;
+    using MediatR;
+
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
     {
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
@@ -38,16 +38,11 @@ namespace BuberDinner.Application.Services.Authentication.Commands.Register
             }
 
             //create user
-            var user = new User
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Email = request.Email,
-                Password = request.Password
-            };
+            var user = User.Create(request.FirstName,request.LastName,request.Email,request.Password);
+            
             _userRepository.AddUser(user);
             // create Jwt token
-            Guid userId = user.Id;
+            Guid userId = user.Id.Value;
             var token = _jwtTokenGenerator.GeneratorToken(user);
             return new AuthenticationResult(user, token);
         }

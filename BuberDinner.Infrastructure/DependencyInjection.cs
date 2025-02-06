@@ -21,17 +21,26 @@ namespace BuberDinner.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
         {
-            services.AddAuth(configuration);
+            services.AddAuth(configuration)
+                .AddPersistance();
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
+
+
+            return services;
+        }
+        public static IServiceCollection AddPersistance(this IServiceCollection services)
+        {
+
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IMenuRepository, MenuRepository>();
             return services;
         }
         public static IServiceCollection AddAuth(this IServiceCollection services, ConfigurationManager configuration)
         {
-            var JwtSettings = new JwtSettings();
-            configuration.Bind(JwtSettings.SectionName, JwtSettings);
-            services.AddSingleton(Options.Create(JwtSettings));
+            var jwtSettings = new JwtSettings();
+            configuration.Bind(JwtSettings.SectionName, jwtSettings);
+            services.AddSingleton(Options.Create(jwtSettings));
             services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
 
             services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
@@ -42,9 +51,9 @@ namespace BuberDinner.Infrastructure
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = JwtSettings.Issuer,
-                    ValidAudience = JwtSettings.Audience,
-                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.Secret))
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Audience,
+                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
                 });
 
             return services;
