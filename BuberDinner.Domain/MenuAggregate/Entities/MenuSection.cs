@@ -23,6 +23,8 @@ namespace BuberDinner.Domain.Menu.Entities
         }
         public static MenuSection Create(string name, string description,List<MenuItem>? menuItems)
             =>new MenuSection(MenuSectionId.CreateUnique(),name, description,menuItems);
-        
+#pragma warning disable CS8618
+        private MenuSection() { }
+#pragma warning restore CS8618
     }
 }

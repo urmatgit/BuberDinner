@@ -10,6 +10,7 @@ namespace BuberDinner.Domain.Common.Models
         where TId : notnull 
     {
         public TId Id { get; set; }
+
         protected Entity(TId id)=>Id = id;
         public override bool Equals(object? obj)
         {
@@ -33,5 +34,8 @@ namespace BuberDinner.Domain.Common.Models
         {
             return Id.GetHashCode();
         }
+#pragma warning disable CS8618
+        protected Entity() { }
+#pragma warning restore CS8618
     }
 }

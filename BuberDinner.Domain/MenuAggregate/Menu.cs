@@ -18,20 +18,20 @@ namespace BuberDinner.Domain.Menu
         private readonly List<MenuSection> _sections = new List<MenuSection>();
         private readonly List<DinnerId> _dinnerIds = new List<DinnerId>();
         private readonly List<MenuReviewId> _menuReviewIds = new List<MenuReviewId>();
-        public string Name { get;  }
-        public string Description { get; }
-        public AverageRating AverageRating { get; }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        public AverageRating AverageRating { get; private set; }
         
         
         
 
-        public HostId HostId { get; }
+        public HostId HostId { get; private set; }
         public IReadOnlyList<MenuSection> Sections => _sections.AsReadOnly();
         public IReadOnlyList<DinnerId> DinnerIds => _dinnerIds.AsReadOnly();
         public IReadOnlyList<MenuReviewId> MenuReviewIds => _menuReviewIds.AsReadOnly();
-        public DateTime CreateDateTime { get; }
-        public DateTime UpdateDateTime { get; }
-
+        public DateTime CreateDateTime { get; private set; }
+        public DateTime UpdateDateTime { get; private set; }
+        
         private Menu(MenuId menuId,string name,string description,HostId hostId,List<MenuSection>? menuSections,  DateTime createDateTime, DateTime updateDateTime): base(menuId)
         {
             Name = name;
@@ -44,5 +44,11 @@ namespace BuberDinner.Domain.Menu
         }
         public static Menu Create(string name, string description, HostId hostId,List<MenuSection>? menuSections) 
             => new Menu(MenuId.CreateUnique(), name, description, hostId,menuSections,  DateTime.UtcNow, DateTime.UtcNow);
+#pragma warning disable CS8618
+        private Menu()
+        {
+
+        }
+#pragma warning restore CS8618
     }
 }
