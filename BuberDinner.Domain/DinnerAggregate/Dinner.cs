@@ -4,6 +4,7 @@ using BuberDinner.Domain.Dinner.ValueObjects;
 using BuberDinner.Domain.Host.ValueObjects;
 using BuberDinner.Domain.Menu.ValueObjects;
 using BuberDinner.Domain.Price;
+using BuberDinner.Domain.Reservation;
 using BuberDinner.Domain.Reservation.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,10 @@ using System.Threading.Tasks;
 
 namespace BuberDinner.Domain.Dinner
 {
-    public class Dinner : AggregateRoot<DinnerId>
+    public class Dinner : AggregateRoot<DinnerId,Guid>
     {
 
+        private readonly List<Domain.Reservation.Reservation> _reservations = new List<Domain.Reservation.Reservation>();
         private Dinner(DinnerId dinnerId): base(dinnerId) { }
         public static Dinner Create()
         {
@@ -42,12 +44,20 @@ namespace BuberDinner.Domain.Dinner
             public MenuId MenuId { get; set; }
             public string ImageUrl { get; set; }
             public Location Location { get; set; }
-            public List<ReservationId> Reservations { get; set; }
+        //public List<ReservationId> Reservations { get; set; }
+        public IReadOnlyList<Reservation.Reservation> Reservations => _reservations.AsReadOnly();
             public DateTime CreatedDateTime { get; set; }
             public DateTime UpdatedDateTime { get; set; }
+#pragma warning disable CS8618
+        private Dinner()
+        {
+
         }
+#pragma warning restore CS8618
+    }
 
-        
 
-    
+
+
+
 }

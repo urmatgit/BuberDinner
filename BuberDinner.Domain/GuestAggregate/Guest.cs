@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BuberDinner.Domain.Guest
 {
-    public class Guest : AggregateRoot<GuestId>
+    public class Guest : AggregateRoot<GuestId,Guid>
     {
         private Guest(GuestId id) : base(id)
         {

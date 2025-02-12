@@ -10,6 +10,7 @@ namespace BuberDinner.Contracts.Menus
     (
         string Name,
         string Description,
+        double AverageRating,
         List<MenuSection> Sections
     );
     public record MenuSection(string Name,string Description, List<MenuItem> Items);

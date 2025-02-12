@@ -17,6 +17,7 @@ namespace BuberDinner.Application.Menus.Commands.CreateMenu
         string HostId,
          string Name,
          string Description,
+         double AverageRating,
          List<MenuSectionCommand> Sections
      ) : IRequest<ErrorOr<Menu>>
     {

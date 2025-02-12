@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BuberDinner.Domain.Host
 {
-    public class Host : AggregateRoot<HostId>
+    public class Host : AggregateRoot<HostId,string>
     {
 
         private Host(HostId id) : base(id)

@@ -1,5 +1,6 @@
 ﻿using BuberDinner.Domain.Bill.ValueObjects;
 using BuberDinner.Domain.Common.Models;
+using BuberDinner.Domain.Dinner.ValueObjects;
 using BuberDinner.Domain.Guest.ValueObjects;
 using BuberDinner.Domain.Reservation.ValueObjects;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BuberDinner.Domain.Reservation
 {
-    public class Reservation : AggregateRoot<ReservationId>
+    public class Reservation : AggregateRoot<ReservationId,Guid>
     {
         private Reservation(ReservationId id) : base(id) { }
         public static Reservation Create()
@@ -22,11 +23,14 @@ namespace BuberDinner.Domain.Reservation
             };
         }
 
-        public ReservationId id { get; set; }
+       
+
+        public ReservationId Id { get; set; }
         public int QuestCount { get; set; }
         public string ReservationStatus { get; set; }
         public GuestId GuestId { get; set; }
         public BillId BillId { get; set; }
+        public DinnerId DinnerId { get; set; }
         public DateTime? ArrivalDateTime { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public DateTime UpdatedDateTime { get; set; }

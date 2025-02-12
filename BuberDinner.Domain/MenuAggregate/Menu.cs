@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BuberDinner.Domain.Menu
 {
-    public sealed class Menu: AggregateRoot<MenuId>
+    public sealed class Menu: AggregateRoot<MenuId,Guid>
     {
         private readonly List<MenuSection> _sections = new List<MenuSection>();
         private readonly List<DinnerId> _dinnerIds = new List<DinnerId>();
@@ -32,18 +32,19 @@ namespace BuberDinner.Domain.Menu
         public DateTime CreateDateTime { get; private set; }
         public DateTime UpdateDateTime { get; private set; }
         
-        private Menu(MenuId menuId,string name,string description,HostId hostId,List<MenuSection>? menuSections,  DateTime createDateTime, DateTime updateDateTime): base(menuId)
+        private Menu(MenuId menuId,string name,string description,double rating, HostId hostId,List<MenuSection>? menuSections,  DateTime createDateTime, DateTime updateDateTime): base(menuId)
         {
             Name = name;
             Description = description;
-            HostId = hostId;
+            this.AverageRating = AverageRating.CreateNew(rating,(int)rating);
+             HostId = hostId;
             _sections = menuSections;
             CreateDateTime = createDateTime;
                 
             UpdateDateTime = updateDateTime;
         }
-        public static Menu Create(string name, string description, HostId hostId,List<MenuSection>? menuSections) 
-            => new Menu(MenuId.CreateUnique(), name, description, hostId,menuSections,  DateTime.UtcNow, DateTime.UtcNow);
+        public static Menu Create(string name, string description, double rating, HostId hostId,List<MenuSection>? menuSections) 
+            => new Menu(MenuId.CreateUnique(), name, description,rating, hostId,menuSections,  DateTime.UtcNow, DateTime.UtcNow);
 #pragma warning disable CS8618
         private Menu()
         {

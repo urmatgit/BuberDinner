@@ -7,6 +7,7 @@ using BuberDinner.Infrastructure.Persistence.Repositories;
 using BuberDinner.Infrastructure.Services;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,7 +38,10 @@ namespace BuberDinner.Infrastructure
         {
             services.AddDbContext<BuberDinnerDbContext>(options =>
             {
-                options.UseSqlServer();
+
+                //options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=BuberDinner;Integrated Security=True;Encrypt=false");
+                options.UseSqlServer("Server=localhost;Database=BuberDinner;User Id=sa;Password=urmat82!;Encrypt=false");
+                
             });
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IMenuRepository, MenuRepository>();

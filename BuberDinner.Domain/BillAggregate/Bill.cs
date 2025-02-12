@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BuberDinner.Domain.Bill
 {
-    public class Bill: AggregateRoot<BillId>
+    public class Bill: AggregateRoot<BillId,Guid>
     {
         private Bill(BillId id, DinnerId dinnerId,GuestId guestId,  HostId hostId, PriceMenu price) : base(id)
         {
@@ -40,8 +40,13 @@ namespace BuberDinner.Domain.Bill
             public PriceMenu Price { get; set; }
             public DateTime CreatedDateTime { get; set; }
             public DateTime UpdatedDateTime { get; set; }
-        
- 
+
+#pragma warning disable CS8618
+        private Bill()
+        {
+
+        }
+#pragma warning restore CS8618
 
     }
 }

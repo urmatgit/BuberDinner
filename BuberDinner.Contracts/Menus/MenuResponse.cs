@@ -10,7 +10,7 @@ namespace BuberDinner.Contracts.Menus
         string Id,
         string Name,
         string Description,
-        double? AverageRating,
+        double AverageRating,
         List<MenuSectionResponse> Sections,
         string HostId,
         List<string> DinnerIds,

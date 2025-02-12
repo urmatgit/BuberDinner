@@ -29,6 +29,7 @@ namespace BuberDinner.Application.Menus.Commands.CreateMenu
             var menu=Menu.Create(
                 request.Name,
                 request.Description,
+                request.AverageRating,
                 HostId.Create(request.HostId),
                 request.Sections.ConvertAll(sections => MenuSection.Create(
                                 sections.Name, 

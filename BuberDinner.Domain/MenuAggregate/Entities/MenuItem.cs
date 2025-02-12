@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BuberDinner.Domain.Menu.Entities
 {
-    public sealed class MenuItem : AggregateRoot<MenuItemId>
+    public sealed class MenuItem : AggregateRoot<MenuItemId,Guid>
     {
         private MenuItem(MenuItemId menuItemId,string name,string description): base(menuItemId)
         {
