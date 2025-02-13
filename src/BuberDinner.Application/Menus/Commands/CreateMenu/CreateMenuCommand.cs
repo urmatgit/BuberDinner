@@ -19,11 +19,11 @@ namespace BuberDinner.Application.Menus.Commands.CreateMenu
          string Name,
          string Description,
          double AverageRating,
-         List<MenuSectionCommand> Sections
+         List<CreateMenuSectionCommand> Sections
      ) : IRequest<ErrorOr<Menu>>
     {
 
     }
-    public record MenuSectionCommand(string Name, string Description, List<MenuItemCommand> Items);
-    public record MenuItemCommand(string Name, string Description);
+    public record CreateMenuSectionCommand(string Name, string Description, List<CreateMenuItemCommand> Items);
+    public record CreateMenuItemCommand(string Name, string Description);
 }
